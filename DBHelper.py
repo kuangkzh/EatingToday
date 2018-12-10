@@ -62,12 +62,13 @@ def picture_path(user_id, food_id, pic_path):   # 将图片路径注册到评论
 
 def get_history(user_id):
     print(user_id)
-    c = conn.execute("SELECT food_name,time from history,foods where user_id = ? and history.food_id = foods.food_id", (user_id)).fetchall()
+    c = conn.execute("SELECT food_name,time from history,foods where user_id = ? and history.food_id = foods.food_id",
+                     (user_id,)).fetchall()
     print(c)
     return c
 
 
 def get_comment(food_id):
-    food_name = conn.execute("SELECT food_name from foods where food_id = ?", (food_id)).fetchone()[0]
-    c = conn.execute("SELECT * from comments where food_id = ?",(food_id)).fetchall()
+    food_name = conn.execute("SELECT food_name from foods where food_id = ?", (food_id,)).fetchone()[0]
+    c = conn.execute("SELECT * from comments where food_id = ?", (food_id,)).fetchall()
     return [food_name, c]

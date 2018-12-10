@@ -2,7 +2,6 @@ import os
 from flask import Flask, render_template, flash, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 import time
-
 import DBHelper
 
 
@@ -21,6 +20,23 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+# @app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        print(username, password)
+        user_id = DBHelper.user_verification(username, password)
+        if user_id:
+            print(user_id)
+            return redirect(url_for('user_history', name = username))
+        elif username != "" and password != "":
+            message = "用户名或密码错误"
+            return render_template('login.html', message=message)
+    return render_template('login.html')
 
 
 @app.route('/<name>/history')

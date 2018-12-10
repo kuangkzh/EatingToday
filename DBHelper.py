@@ -1,7 +1,7 @@
 import sqlite3
 import time
 
-conn = sqlite3.connect("eatingtoday.db", check_same_thread = False)
+conn = sqlite3.connect("eatingtoday.db", check_same_thread=False)
 
 
 def create_user(nickname, password):

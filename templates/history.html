@@ -15,6 +15,13 @@
 		<h1 class="mui-title">今天吃啥</h1>
 	</header>
     <div class="mui-content">
+        <div>
+            <ul>
+                {% for food in history %}
+                    <li>{{ food.food_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </body>
 </html>

@@ -89,7 +89,7 @@ class FoodRecommender:
 
     def too_hot(self, food_id):
         s = DBHelper.conn.execute("SELECT ifnull(avg(hot),-1) FROM comments WHERE food_id=?", (food_id, )).fetchone()[0]
-        if s  ==  -1:
+        if s == -1:
             self.except_list.append(str(food_id))
         else:
             self.hot_ub = s-0.1

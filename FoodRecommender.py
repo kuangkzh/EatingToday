@@ -109,3 +109,6 @@ class FoodRecommender:
         else:
             self.salty_ub = s
             self.salty = (self.salty_lb+ self.salty_ub)/2
+
+    def no_reason(self, food_id):
+        self.except_list.append(str(food_id))

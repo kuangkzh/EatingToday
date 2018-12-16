@@ -74,9 +74,9 @@ def get_comment(food_id):
     return [food_name, c]
 
 
-def new_feast(user_id, food_id, appoint_time, number_lb, number_ub):
+def new_feast(user_id, food_id, appoint_time, people_limit):
     fid = conn.execute("SELECT ifnull(max(feast_id),0)+1 FROM feast").fetchone()[0]
-    conn.execute("INSERT INTO feast VALUES (?,?,?,?,?,?)", (fid, user_id, food_id, appoint_time, number_lb, number_ub))
+    conn.execute("INSERT INTO feast VALUES (?,?,?,?,?)", (fid, user_id, food_id, appoint_time, people_limit))
     conn.execute("INSERT INTO appointment VALUES (?,?)", (fid, user_id))
     conn.commit()
     return fid
@@ -87,9 +87,9 @@ def new_appoint(feast_id, user_id, notice_func):    # notice_func是人数满时
                     (feast_id, user_id)).fetchone()[0] != 0:
         return False
     c1, c2 = conn.execute("SELECT (SELECT count(*) FROM appointment WHERE feast_id=?)"
-                          ">=(SELECT number_ub FROM feast WHERE feast_id=?),"
+                          ">=(SELECT people_limit FROM feast WHERE feast_id=?),"
                           "(SELECT count(*)+1 FROM appointment WHERE feast_id=?)"
-                          "=(SELECT number_lb FROM feast WHERE feast_id=?);",
+                          "=(SELECT people_limit FROM feast WHERE feast_id=?);",
                           (feast_id, feast_id, feast_id, feast_id)).fetchone()
     if c1:
         return False

@@ -1,6 +1,7 @@
 import os
-from flask import Flask, render_template, flash, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, flash, request, redirect, url_for, send_from_directory,session
 from werkzeug.utils import secure_filename
+from datetime import timedelta
 import time
 import DBHelper
 
@@ -10,6 +11,8 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SECRET_KEY'] = os.urandom(24)  # 设置为24位的字符,每次运行服务器都是不同的，所以服务器启动一次上次的session就清除。
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # 设置session的保存时间。
 
 
 def allowed_file(filename):
@@ -25,7 +28,9 @@ def login_test():
         print(username, password)
         user_id = DBHelper.user_verification(username, password)
         if user_id:
-            print(user_id)
+            print('user_id:', user_id)
+            session.permanent = True  # 默认session的时间持续31天
+            session['user_id'] = user_id
             return redirect(url_for('history_test', name=username))
         elif username != "" and password != "":
             message = "用户名或密码错误"

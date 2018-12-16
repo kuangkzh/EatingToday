@@ -19,7 +19,7 @@
 		<div class="mui-content">
 		    <div class="d-box">
 		    	<div class="logo-img"  style="background:#fff;">
-		    		<img src="img/logo.png"/>
+		    		<img src="{{ url_for('static', filename='img/logo.png') }}/>
 		    		<h4>EATqueen</h4>
 		    		<p>Happy every day!</p>
 		    	</div>
@@ -38,9 +38,10 @@
 				</ul>
 			</div>
 		</div>
+        </div>
 		<!--底部导航-->
 		<nav class="mui-bar mui-bar-tab">
-			<a id="defaultTab" class="mui-tab-item mui-active" href="/history">
+			<a id="defaultTab" class="mui-tab-item" href="/history">
 				<span class="mui-icon iconfont icon-canyin"></span>
 				<span class="mui-tab-label">吃过的</span>
 			</a>
@@ -52,7 +53,7 @@
 				<span class="mui-icon iconfont icon-canyinxitong-"></span>
 				<span class="mui-tab-label">组队吃</span>
 			</a>
-			<a class="mui-tab-item" href="{{ url_for('aboutme') }}">
+			<a class="mui-tab-item  mui-active" href="{{ url_for('aboutme') }}">
 				<span class="mui-icon iconfont icon-geren"></span>
 				<span class="mui-tab-label mui-active">个人中心</span>
 			</a>

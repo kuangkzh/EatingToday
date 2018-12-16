@@ -16,7 +16,32 @@
 		    <h1 class="mui-title">组队聚餐</h1>
 		</header>
 		<div class="mui-content">
-
+            {% for group in groups %}
+                <div class="a-box" style="display:block;">
+                    <div class="a-box-a">
+                        <div  class="a-box-a-a">
+                            <div class="a-box-a-a-l">
+                                <img src="{{ url_for('static', filename='img/food/'+group.image) }}"/>
+                            </div>
+                            <div class="a-box-a-a-r">
+                                <div class="a-box-a-a-r-t">
+                                    <p>时间：{{ group.time_format }}</p>
+                                    <p>餐厅：{{ group.restaurant }}</p>
+                                    <div class="a-box-a-a-r-m">
+                                        <p>食物：{{ group.food_name }}</p>
+                                    </div>
+                                    <div class="a-box-a-a-r-b">
+                                        <p style="width:40%"> 发起人:{{ group.host }}</p>
+                                    </div>
+                                    <div class="a-box-a-a-r-b">
+										<p style="width:40%">人数:<span style="color:{{group.color}}">{{ group.people_count }}/{{ group.people_limit }}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
 		</div>
 		<!--底部导航-->
 		<nav class="mui-bar mui-bar-tab">

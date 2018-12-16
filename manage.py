@@ -6,7 +6,7 @@ import time
 import DBHelper
 
 
-UPLOAD_FOLDER = 'static/uploads/'
+UPLOAD_FOLDER = 'static/img/food/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -82,8 +82,23 @@ def history_detail(food):
     return render_template('01-history-detail.html', food=food)
 
 
-@app.route('/history/upload')
+@app.route('/history/upload', methods=['GET', 'POST'])
 def history_upload():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return render_template('01-history-upload.html', message='上传成功！')
     return render_template('01-history-upload.html')
 
 

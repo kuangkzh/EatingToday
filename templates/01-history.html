@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<header class="mui-bar mui-bar-nav bgcolor">
-			<a href="#" class=" mui-icon mui-icon-plus mui-pull-right" id="span"></a>
+			<a href="{{ url_for('history_upload') }}" class=" mui-icon mui-icon-plus mui-pull-right" id="span"></a>
 		    <h1 class="mui-title">历史记录</h1>
 		</header>
 		<div class="mui-content">
@@ -28,7 +28,7 @@
                     <div class="a-box-a">
                         <div  class="a-box-a-a">
                             <div class="a-box-a-a-l">
-                                <img src="{{ url_for('static', filename='food/'+food.image) }}"/>
+                                <img src="{{ url_for('static', filename='img/food/'+food.image) }}"/>
                             </div>
                             <div class="a-box-a-a-r">
                                 <div class="a-box-a-a-r-t">

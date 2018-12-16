@@ -21,12 +21,12 @@ def user_verification(name, psw):
         return None     # 验证失败
 
 
-def new_food(food_name):
-    if conn.execute("SELECT count(*) FROM foods WHERE food_name=?", (food_name, )).fetchone()[0] != 0:
+def new_food(food_name, restaurant):
+    if conn.execute("SELECT count(*) FROM foods WHERE food_name=? AND restaurant=?", (food_name, restaurant)).fetchone()[0] != 0:
         return None  # 失败
-    conn.execute("INSERT INTO foods SELECT ifnull(max(food_id),0)+1,? FROM foods", (food_name, ))
+    conn.execute("INSERT INTO foods SELECT ifnull(max(food_id),0)+1,?,? FROM foods", (food_name, restaurant))
     conn.commit()
-    fid = conn.execute("SELECT food_id FROM foods WHERE food_name=?", (food_name, )).fetchone()[0]
+    fid = conn.execute("SELECT food_id FROM foods WHERE food_name=? AND restaurant=?", (food_name, restaurant)).fetchone()[0]
     return fid  # 返回food_id
 
 

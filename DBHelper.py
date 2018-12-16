@@ -4,10 +4,10 @@ import time
 conn = sqlite3.connect("eatingtoday.db", check_same_thread=False)
 
 
-def create_user(nickname, password):
+def create_user(nickname, password, email):
     if conn.execute("SELECT count(*) FROM user WHERE nickname=?", (nickname, )).fetchone()[0] != 0:
         return None  # 注册失败
-    conn.execute("INSERT INTO user SELECT ifnull(max(user_id),0)+1,?,? FROM user", (nickname, password))
+    conn.execute("INSERT INTO user SELECT ifnull(max(user_id),0)+1,?,?,? FROM user", (nickname, password, email))
     conn.commit()
     uid = conn.execute("SELECT user_id FROM user WHERE nickname=? AND password=?", (nickname, password)).fetchone()[0]
     return uid  # 返回user_id
@@ -72,3 +72,29 @@ def get_comment(food_id):
     food_name = conn.execute("SELECT food_name from foods where food_id = ?", (food_id,)).fetchone()[0]
     c = conn.execute("SELECT * from comments where food_id = ?", (food_id,)).fetchall()
     return [food_name, c]
+
+
+def new_feast(user_id, food_id, appoint_time, number_lb, number_ub):
+    fid = conn.execute("SELECT ifnull(max(feast_id),0)+1 FROM feast").fetchone()[0]
+    conn.execute("INSERT INTO feast VALUES (?,?,?,?,?,?)", (fid, user_id, food_id, appoint_time, number_lb, number_ub))
+    conn.execute("INSERT INTO appointment VALUES (?,?)", (fid, user_id))
+    conn.commit()
+    return fid
+
+
+def new_appoint(feast_id, user_id, notice_func):    # notice_func是人数满时的触发函数
+    if conn.execute("SELECT count(*) FROM appointment WHERE feast_id=? AND user_id=?",
+                    (feast_id, user_id)).fetchone()[0] != 0:
+        return False
+    c1, c2 = conn.execute("SELECT (SELECT count(*) FROM appointment WHERE feast_id=?)"
+                          ">=(SELECT number_ub FROM feast WHERE feast_id=?),"
+                          "(SELECT count(*)+1 FROM appointment WHERE feast_id=?)"
+                          "=(SELECT number_lb FROM feast WHERE feast_id=?);",
+                          (feast_id, feast_id, feast_id, feast_id)).fetchone()
+    if c1:
+        return False
+    conn.execute("INSERT INTO appointment VALUES (?,?)", (feast_id, user_id))
+    conn.commit()
+    if c2:
+        notice_func()
+    return True

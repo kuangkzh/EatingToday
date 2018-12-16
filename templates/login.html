@@ -15,7 +15,6 @@
 		    <h1 class="mui-title">今天吃啥</h1>
 		</header>
 		<div class="mui-content">
-
 		    <div class="login-a">
 		    	<img src="{{ url_for('static', filename='img/logo.png') }}"/>
 		    </div>
@@ -24,13 +23,13 @@
                     <div class="login-b-b">
                         <div class="login-b-b-l">用户名</div>
                         <div class="login-b-b-r">
-                            <input type="text" placeholder="请输入您的用户名"  />
+                            <input type="text" name="username" placeholder="请输入您的用户名"  />
                         </div>
                     </div>
                     <div class="login-b-b">
                         <div class="login-b-b-l">密码</div>
                         <div class="login-b-b-r">
-                            <input type="password" placeholder="请输入您的密码"  />
+                            <input type="password" name="password" placeholder="请输入您的密码"  />
                         </div>
                     </div>
                 </div>
@@ -39,6 +38,7 @@
                     <p><a href="{{ url_for('register') }}" class="mui-pull-right">注册</a></p>
                 </div>
             </form>
+            <a style="color:#cd5c5c">{{ message }}</a>
             <!--
 		    <div class="sdk-a" style="padding: 10px 0px;">
 		    	<a href="#"  class="mui-icon mui-icon-qq"></a>

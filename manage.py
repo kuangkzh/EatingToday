@@ -20,8 +20,8 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/login-test', methods=['GET', 'POST'])
-def login_test():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -29,17 +29,12 @@ def login_test():
         user_id = DBHelper.user_verification(username, password)
         if user_id:
             print('user_id:', user_id)
-            session.permanent = True  # 默认session的时间持续31天
+            session.permanent = True
             session['user_id'] = user_id
-            return redirect(url_for('history_test', name=username))
+            return redirect(url_for('history'))
         elif username != "" and password != "":
             message = "用户名或密码错误"
-            return render_template('login-test.html', message=message)
-    return render_template('login-test.html')
-
-
-@app.route('/login')
-def login():
+            return render_template('login.html', message=message)
     return render_template('login.html')
 
 
@@ -58,39 +53,60 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/<name>/history')
-def history(name):
-    return render_template('01-history.html', name=name)
+@app.route('/history')
+def history():
+    return render_template('01-history.html')
 
 
-@app.route('/<name>/history/<food>')
-def history_detail(name, food):
-    return render_template('01-history-detail.html', name=name, food=food)
+@app.route('/history/<food>')
+def history_detail(food):
+    return render_template('01-history-detail.html', food=food)
 
 
-@app.route('/<name>/history/upload')
-def history_upload(name):
-    return render_template('01-history-upload.html', name=name)
+@app.route('/history/upload')
+def history_upload():
+    return render_template('01-history-upload.html')
 
 
-@app.route('/<name>/suggestions')
-def suggestions(name):
-    return render_template('02-suggestions.html', name=name)
+@app.route('/suggestions')
+def suggestions():
+    return render_template('02-suggestions.html')
 
 
-@app.route('/<name>/group')
-def group(name):
-    return render_template('03-group.html', name=name)
+@app.route('/group')
+def group():
+    return render_template('03-group.html')
 
 
-@app.route('/<name>/aboutme')
-def aboutme(name):
-    return render_template('04-aboutme.html', name=name)
+@app.route('/aboutme')
+def aboutme():
+    return render_template('04-aboutme.html')
 
 
-@app.route('/<name>/aboutme/settings')
+@app.route('/aboutme/settings')
 def aboutme_settings(name):
-    return render_template('04-aboutme-settings.html', name=name)
+    return render_template('04-aboutme-settings.html')
+
+
+# ------以下为测试页面-------
+
+
+@app.route('/login-test', methods=['GET', 'POST'])
+def login_test():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        print(username, password)
+        user_id = DBHelper.user_verification(username, password)
+        if user_id:
+            print('user_id:', user_id)
+            session.permanent = True
+            session['user_id'] = user_id
+            return redirect(url_for('history_test'))
+        elif username != "" and password != "":
+            message = "用户名或密码错误"
+            return render_template('login-test.html', message=message)
+    return render_template('login-test.html')
 
 
 @app.route('/<name>/history-test')

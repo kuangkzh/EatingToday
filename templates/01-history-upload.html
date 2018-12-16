@@ -4,16 +4,17 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="css/mui.min.css" rel="stylesheet" />
-		<script src="js/mui.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
-		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<script src="{{ url_for('static', filename='js/mui.min.js') }}"></script>
+		<link href="{{ url_for('static', filename='css/mui.min.css') }}" rel="stylesheet"/>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/iconfont.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
 		<style>
 			#add{
 				height: 8px;
 				width: 8px;
 			}
 			#img{
+				width: 100px;
 				overflow: hidden;
 				padding-top: 10px;
 			}	
@@ -53,16 +54,38 @@
 		<div class="mui-content">
 		    <div class="fa-box">
 		    	<input type="text" class="info" placeholder="吃的啥？">
-		    	<textarea cols="60" class="info" rows="10" style="height:100px;" placeholder="请输入你的意见"></textarea>
+		    	<textarea cols="60" class="info" rows="10" style="height:100px;" placeholder="请输入你的评论"></textarea>
+				<div class="mui-input-row mui-input-range">
+					<label>评分</label>
+					<input type="range" min="0" max="5">
+				</div>
+				<div class="mui-input-row mui-input-range">
+					<label>酸</label>
+					<input type="range" min="0" max="5">
+				</div>
+				<div class="mui-input-row mui-input-range">
+					<label>甜</label>
+					<input type="range" min="0" max="5">
+				</div>
+				<div class="mui-input-row mui-input-range">
+					<label>辣</label>
+					<input type="range" min="0" max="5">
+				</div>
+				<div class="mui-input-row mui-input-range">
+					<label>咸</label>
+					<input type="range" min="0" max="5">
+				</div>
+				<div class="mui-input-row mui-input-range">
+					<label>腻</label>
+					<input type="range" min="0" max="5">
+				</div>
+				<div style="height:40px;"></div>
 		    	<div id="img">
 		    		<div style="width:50px;height:50px;"><span id="add">+</span></div>
 		    		<!--<div>
 			    			<img src="img/logo1.png" alt="" />
 			    			<i class="del">+</i>
 			    		</div>-->
-		    		
-		    		
-		
 		    	</div>
 		    </div>
 		    <div class="btn">

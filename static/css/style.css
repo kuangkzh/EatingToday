@@ -1,0 +1,299 @@
+.bgcolor{
+	background: indianred;
+}
+/*底部导航选中颜色*/
+.mui-bar-tab .mui-tab-item.mui-active{
+	color:indianred;
+}
+.so{
+	overflow: hidden; /*清除浮动*/
+	height: 43px;
+	border-bottom: 1px solid #f0f0f0;  /* 灰色*/
+	
+}
+.so-r
+{
+	width: 92%;
+	height: 100%;
+	background: #F0F0F0;
+	float: left;
+}
+.so-l
+{
+	width: 8%;
+	background: #F0F0F0;
+	float: left;
+}
+.soso input{
+	height: 28px;
+	font-size: 13px;
+	border: 0px;
+	border-radius: 0px;
+}
+.mui-bar-tab .mui-tab-item.mui-active{
+	color:#F65819;
+}
+.bgcolor h1{
+	color: #222222;
+	font-size: 19px;
+	font-weight:20px;
+}
+.bgcolor a{
+	color: #222222;
+	}
+/*登录*/
+.login-a img
+{
+	width:  140px;
+	height: 140px;
+	margin:50px auto;
+	display: block;
+	border-radius: 10px;
+}
+
+.login-b-b
+{
+	background: #FFFFFF;
+	height: 45px;
+	overflow: hidden; /*清除浮动*/
+	border-bottom: 1px solid #f0f0f0;  /* 灰色*/
+}
+.login-b-b-l
+{
+	width: 20%;
+	/*background: darkgray; /*/
+	text-align: center;
+	line-height: 45px;
+	float: left;
+	font-size: 14px;
+	border-right: 1px solid #F0F0F0;
+	
+}
+.login-b-b-r
+{
+	width: 80%;
+	float: left;
+	font-size: 13px;
+	position: relative;
+}
+.login-b-b-r input{
+	border-radius: 0px;
+	border: 0px;
+	height: 45px;
+} 
+.yzm{
+	position: absolute; 
+	top:7px;
+	padding: 5px 14px;
+	right:10px;
+	border: 1px solid #F0F0F0;
+	font-size: 13px;
+	color: indianred;
+	background: transparent;
+}
+.btn button
+{
+	width: 80%;
+	margin: 20px auto 10px;
+	display: block;
+	border:0px;  /*去掉边*/
+	background:indianred ;
+	padding: 10px 0px;
+}
+.btn p{
+	width: 80%;
+	margin: 0px auto;
+}
+.btn p a{
+	color: #888;
+	font-size: 13px;
+}
+.sdk-a{
+	overflow: hidden;
+	margin-top:50px;
+}
+.sdk-a a{
+	width: 50%;
+	float: left;
+	text-align: center;
+	font-size: 30px;
+	color: #000;
+}
+/*界面a*/
+.a-box{
+	display: none;
+	
+}
+.a-box-a-a{
+	/*background: #AAAAAA;*/
+	overflow: hidden;
+	padding: 10px 0px;
+	background: #fff;
+	margin-bottom: 5px;
+	/* background: red;*/
+}
+.a-box-a-a-l{
+	width: 35% ;
+	/*background: #ACACB4;*/
+	float: left;
+}
+.a-box-a-a-r{
+	width: 65% ;
+	/*background:  #ACACB4;*/
+	float: left;
+}
+.a-box-a-a-l img{
+	width:  100%;
+	height: auto;    /*高度暂时这样*/
+	display: block;
+	margin: 0px auto;
+	display: block;
+	border-radius: 10px;
+	
+}
+.a-box-a-a-r-t{
+	position: relative;
+}
+.a-box-a-a-r-t p{
+	font-weight:normal;
+	font-size: 12px;
+	color: #222222;
+	padding: 0 5%;
+	margin: 0px;
+}
+/*.a-box-a-a-r-t h4{
+	font-weight:normal;
+	font-size: 12px;
+	padding: 0 5%;
+	color: #222222;
+	margin: 0px;
+}*/
+.a-box-a-a-r-t span{
+	font-weight:normal;
+	font-size: 12px;
+	color: #555555;
+	padding: 6%;
+	margin: 0px;
+}
+.a-box-a-a-r-m p{
+	font-weight:20px;
+	font-size: 20px;
+	color: #DD524D;
+	margin: 0px;
+	text-align:center;
+}
+.a-box-a-a-r-b p{
+	width:33.33%;
+	float: left;
+	text-align:center;
+	margin: 2px;
+	height: 30px;
+	line-height: 30px;
+}
+.span-t{
+	font-size: 20px;
+}
+.span-m{
+	font-size: 15px;
+}
+/*d个人中心 界面*/
+.logo-img{
+	padding: 50px 0px 0px 0px;
+}
+.logo-img img{
+	width:150px;
+	height:150px;
+	margin:0px auto;
+	display: block;
+	border-radius: 10px;
+	background: #fff;
+}
+.logo-img h4{
+	text-align: center;
+	padding-top: 5px;
+}
+.logo-img p{
+	text-align: center;
+	margin: 0px;
+	padding-botttom: 10px;
+	font-size: 13px;
+	color: #898989;
+}
+.d-box-a ul{
+	margin-top:10px;
+}
+
+/*详情页面*/
+.xq-box-a{
+	background: #fff;
+}
+.xq-box-a-t{
+	overflow: hidden;
+	padding: 10px 0px;
+	height: 200px;
+	position: relative;
+}
+.xq-box-a-t-l{
+	width:45%;
+	float:left;
+
+}
+.xq-box-a-t-l img{
+	width:100%;
+	height: 100%;
+	margin: 30px auto;
+	float:left;
+	border-radius: 20px;
+}
+.xq-box-a-t-r{
+	width:55%;
+	float:left;
+}
+.xq-box-a-t-r p{
+	margin: 0px;
+	line-height: 100px;
+	text-align:center;
+	font-size: 18px;
+}
+.xq-box-a-t-r span{
+	position: absolute;
+	top:0px;
+	right:10px;
+	font-size: 12px;
+
+}
+.xq-p{
+	padding: 0px 0px 10px 10px!important;
+	line-height: 25px;
+	margin: 0px;
+}
+.xq-box-a-b{
+	padding: 0px;
+}
+/*发帖*/
+.fa-box{
+	background: #fff;
+	padding-bottom: 10px;
+}
+.fa-box input{
+	margin: 0px;
+	border: 0px;
+	border-radius: 0px;
+	border-bottom: 1px solid #f0f0f0;
+	font-size: 14px;
+	height: 44px;
+}
+.fa-box textarea{
+	border: 0px;
+	border-radius: 0px;
+	font-size: 13px;
+	margin: 0px;
+}
+.fa-box span{
+	font-size: 50px;
+	padding: 10px;
+	color: #666;
+}
+.span-span-a span{
+	padding: 0px 10px;
+}

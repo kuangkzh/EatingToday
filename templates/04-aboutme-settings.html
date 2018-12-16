@@ -1,0 +1,352 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>今天吃啥-设置</title>
+		<script src="{{ url_for('static', filename='js/mui.min.js') }}"></script>
+		<link href="{{ url_for('static', filename='css/mui.min.css') }}" rel="stylesheet"/>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/iconfont.css') }}" />
+		<style>
+			input{
+				text-align: right;
+			}
+		</style>
+		
+		
+		<link rel="stylesheet" type="text/css" href="combinationSelect/picker.css"/>
+		<link rel="stylesheet" type="text/css" href="combinationSelect/poppicker.css"/>
+		<script src="combinationSelect/picker.js"></script>
+		<script src="combinationSelect/poppicker.js"></script>
+		<script src="combinationSelect/city.data-3.js"></script>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav bg-color">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <a  class="mui-icon iconfont icon-tijiao mui-pull-right btn"></a>
+		    <h1 class="mui-title">设置</h1>
+		</header>
+		<div class="mui-content">
+		   <div class="input">
+			   	<form class="mui-input-group">
+			   		<div class="mui-input-row" style="position: relative;">
+			           <label>头像</label>
+			           <img id="img" style="height:30px;width:30px;position: absolute;top:5px;right:10px;" src="img/logo.png"/>
+			       </div>
+			       <div class="mui-input-row">
+			           <label>昵称</label>
+			           <input type="text"  placeholder="输入你的昵称">
+			       </div>
+			        <div class="mui-input-row">
+			           <label>签名</label>
+			           <input type="text"  placeholder="请输入您的签名">
+			       </div>
+			        <div class="mui-input-row">
+			           <label>城市</label>
+			           <input disabled="disabled" type="text" placeholder="城市">
+			       </div>
+			        <div class="mui-input-row">
+			           <label>性别</label>
+			           <input disabled="disabled" type="text" placeholder="性别">
+			       </div>
+			   </form>
+		   </div>
+		    <div class="btn">
+		    	<button id="quit">退出登录</button>
+		    </div>
+		</div>
+		<script type="text/javascript">
+			mui.init()
+			
+			var cell = document.getElementsByClassName('mui-input-row');
+			var img = document.getElementById('img');
+			var input = document.getElementsByTagName('input');
+			
+			
+			//拿到本地存储的最新的用户信息
+			
+			var user_data = JSON.parse(localStorage.getItem('user_data'));
+			
+			if(user_data.head_img){
+				img.src = user_data.head_img;
+			}else{
+				img.src = 'img/logo.jpg';
+			}
+			
+			if(user_data.nickname){
+				input[0].value = user_data.nickname;
+			}
+			if(user_data.about){
+				input[1].value = user_data.about;
+			}
+			if(user_data.city){
+				input[2].value = user_data.city;
+			}
+			if(user_data.sex){
+				input[3].value = user_data.sex;
+			}
+			
+			
+			
+			
+			cell[0].addEventListener('tap',function(){
+				
+				mui.plusReady(function(){
+					
+					var btnArray = [{title:"照相机"},{title:"相册"}]; //选择按钮  1 2 3
+					plus.nativeUI.actionSheet( {
+						title:"请选择",
+						cancel:"取消", // 0
+						buttons:btnArray
+						}, 
+						function(e){
+							var index = e.index; // 
+							
+							if(index == 1){
+								//照相机
+								var cmr = plus.camera.getCamera();
+								cmr.captureImage( function ( p ) {
+										//成功
+										plus.io.resolveLocalFileSystemURL( p, function ( entry ) {
+											update_img(entry.toLocalURL());
+										}, function ( e ) {
+											console.log( "读取拍照文件错误："+e.message );
+										} );
+										
+									}, function ( e ) {
+										console.log( "失败："+e.message );
+								}, {filename:'_doc/camera/',index:1} ); //  “_doc/camera/“  为保存文件名
+							}else if(index == 2){
+								//相册
+								
+								plus.gallery.pick( function(path){
+    
+								   update_img(path);
+								    
+								}, function ( e ) {
+								    console.log( "取消选择图片" );
+								}, {filter:"image"} );
+							}
+							
+							
+					} );
+					
+					
+				});
+				
+			});
+			
+			
+			//上传图片
+			function update_img(p){
+//				alert(img);
+				//初始上传地址  
+				var server="http://peipao.dongyixueyuan.com/upload_file.php";  // 学员测试使用
+				var files=[]; //图片存放的数组 可以上传一个，或者多个图片 
+						
+				//又初始化了一下文件数组 为了支持我的单个上传,如果你要一次上传多个，就不要在写这一行了
+				//注意 
+				files=[];
+				var n=p.substr(p.lastIndexOf('/')+1);
+				files.push({name:"uploadkey",path:p});
+				
+				if(files.length<=0){
+					plus.nativeUI.alert("没有添加上传文件！");
+					return;
+				}
+				//原生的转圈等待框
+				var wt=plus.nativeUI.showWaiting();
+						
+				var task=plus.uploader.createUpload(server,
+					{method:"POST"},
+					function(t,status){ //上传完成
+						
+						if(status==200){
+									
+							//资源
+							var responseText = t.responseText;
+									
+							//转换成json
+							var json = eval('(' + responseText + ')');
+								
+							//上传文件的信息
+							var files = json.files;
+							
+							mui.toast('上传成功');
+							//上传成功以后的保存路径
+							var img_url = files.uploadkey.url;
+							
+							img.src = 'http://peipao.dongyixueyuan.com'+img_url;		
+							//ajax 写入数据库
+									
+									
+									
+							//关闭转圈等待框
+							wt.close();
+						}else{
+							console.log("上传失败："+status);
+							//关闭原生的转圈等待框
+							wt.close();
+						}
+					});
+							
+					task.addData("client","");
+					task.addData("uid",getUid());
+					for(var i=0;i<files.length;i++){
+						var f=files[i];
+						task.addFile(f.path,{key:f.name});
+					}
+					task.start();
+						
+			
+			}
+			
+			
+			// 产生一个随机数
+			function getUid(){
+				return Math.floor(Math.random()*100000000+10000000).toString();
+			}
+			
+			cell[3].addEventListener('tap',function(){
+				mui.plusReady(function(){
+					var selector = new mui.PopPicker({
+						layer: 3
+					});
+					
+					selector.setData(cityData3);
+					selector.show(function(items) {
+						var backArr = [];
+						backArr = [(items[0] || {}).text,(items[1] || {}).text,(items[2] || {}).text];
+						input['2'].value = backArr;
+					});
+					
+				})
+			});
+			
+			
+			cell[4].addEventListener('tap',function(){
+				mui.plusReady(function(){
+					
+					var btnArray = [{title:"男"},{title:"女"},{title:'不男不女'}]; //选择按钮  1 2 3
+					plus.nativeUI.actionSheet( {
+						title:"请选择",
+						cancel:"取消", // 0
+						buttons:btnArray
+						}, 
+						function(e){
+							var index = e.index; // 
+							
+							input[3].value = btnArray[index-1].title;
+	
+					} );
+									
+				});
+			});
+			
+			
+			
+			var btn = document.getElementsByClassName('btn');
+			
+			btn[0].addEventListener('tap',function(){
+				var head_img = img.src;
+				var nickname = input[0].value;
+				var about = input[1].value;
+				var city = input[2].value;
+				var sex = input[3].value;
+				
+				if(head_img == 'file:///storage/emulated/0/Android/data/io.dcloud.HBuilder/.HBuilder/apps/HBuilder/www/img/logo.jpg'){
+					head_img = '';
+				}
+				
+				if(nickname == ''){
+					mui.toast('昵称不能为空');
+					return;
+				}
+				
+				var phone = localStorage.getItem('login_phone');
+				var request_url = localStorage.getItem('request_url');
+				mui.get(
+					request_url+'User/mod_user_info',
+					{
+						head_img:head_img,
+						nickname:nickname,
+						about:about,
+						city:city,
+						sex:sex,
+						phone:phone
+					},
+					function(data){
+						if(data == 1){
+							mui.toast('已保存');
+							
+							
+							mui.plusReady(function(){
+								
+								
+								var d = plus.webview.getWebviewById('d.html');
+								mui.fire(d,'update_user_info',{});
+								
+								mui.back();
+							});
+							
+							
+							
+						}else{
+							mui.toast('保存失败');
+						}
+					},
+					'json'
+				)
+				
+				
+				
+				
+				
+			});
+			
+			
+			var quit = document.getElementById('quit');
+			quit.addEventListener('tap',function(){
+				
+				mui.confirm('是否退出登录?','提示',['是','否'],function(data){
+					if(data.index == 0){
+						
+						//清楚掉登录依据的本地存储
+						localStorage.removeItem('login_phone');
+						
+						//删除本地存的最新的用户信息
+						localStorage.removeItem('user_data');
+						
+						//通知相应界面更新数据
+						mui.plusReady(function(){
+							var d = plus.webview.getWebviewById('d.html');
+							mui.fire(d,'update_user_info',{});
+							
+							
+							//可有可无  回到起始界面
+							var index = plus.webview.getLaunchWebview();
+							mui.fire(index,'gohome',{});
+							
+							
+							
+							mui.back();
+						});
+						
+						
+					}
+				});
+				
+				
+				
+				
+			
+			
+			});
+			
+
+		</script>
+	</body>
+
+</html>

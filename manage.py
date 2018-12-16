@@ -109,18 +109,22 @@ def suggestions():
 
 @app.route('/group')
 def group():
-    res = DBHelper.conn.execute("SELECT feast.food_id,appoint_time,restaurant,food_name,people_limit,people_count,nickname"
+    user_id = session.get('user_id')
+    res = DBHelper.conn.execute("SELECT feast.food_id,appoint_time,restaurant,food_name,people_limit,people_count,nickname,feast.feast_id"
                                 " FROM feast JOIN foods ON foods.food_id=feast.food_id "
                                 "JOIN user ON feast.host_user_id=user.user_id "
                                 "JOIN (SELECT feast_id,count(*) as people_count FROM appointment GROUP BY feast_id)"
-                                " as tmp ON tmp. feast_id=feast.feast_id;").fetchall()
+                                " as tmp ON tmp.feast_id=feast.feast_id;").fetchall()
     groups = []
     for i in res:
         color = "#0b0" if i[4] > i[5] else "#b00"
+        status = "加入" if DBHelper.conn.execute("SELECT count(*) FROM appointment WHERE feast_id=? AND user_id=?",
+                                               (i[7], user_id)).fetchone()[0] == 0 else "已加入"
         groups.append({"image": DBHelper.get_img(i[0]),
                        "time_format": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(i[1])),
                        "restaurant": i[2], "food_name": i[3], "people_limit": i[4], "people_count": i[5],
-                       "score": DBHelper.get_avg_score(i[0]), "host": i[6], "color": color})
+                       "score": DBHelper.get_avg_score(i[0]), "host": i[6], "color": color,
+                       "feast_id": i[7], "status": status})
     context = {'groups': groups}
     return render_template('03-group.html', **context)
 
@@ -134,6 +138,11 @@ def aboutme():
 def aboutme_settings(name):
     return render_template('04-aboutme-settings.html')
 
+
+@app.route('/appoint/<feast_id>')
+def appoint(feast_id):
+    DBHelper.new_appoint(feast_id, session.get('user_id'), lambda: print(""))
+    return redirect("/group")
 
 # ------以下为测试页面-------
 

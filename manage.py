@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from datetime import timedelta
 import time
 import DBHelper
+import FoodRecommender
 
 
 UPLOAD_FOLDER = 'static/img/food/'
@@ -77,9 +78,20 @@ def history():
     return render_template('01-history.html', **context)
 
 
-@app.route('/history/<food>')
-def history_detail(food):
-    return render_template('01-history-detail.html', food=food)
+@app.route('/detail/<food>')
+def food_detail(food):
+    food_id = DBHelper.get_food_id(food, '')
+    img = DBHelper.get_img(food_id)
+    score = DBHelper.get_avg_score(food_id)
+    taste = DBHelper.get_avg_taste(food_id)
+    hot = taste[0]
+    salty = taste[1]
+    sweet = taste[2]
+    sour = taste[3]
+    oily = taste[4]
+    food_dict = dict(food_name=food, img=img, score=score, sour=sour, sweet=sweet, hot=hot, salty=salty, oily=oily)
+    context = {'food_dict': food_dict}
+    return render_template('food-detail.html', food=food, **context)
 
 
 @app.route('/history/upload', methods=['GET', 'POST'])
@@ -124,7 +136,26 @@ def history_upload():
 
 @app.route('/suggestions')
 def suggestions():
-    return render_template('02-suggestions.html')
+    user_id = session.get('user_id')
+    num = 3
+    recommender = FoodRecommender.FoodRecommender(user_id)
+    recommendation = recommender.get_recommend(3)
+    recommend_list = []
+    for record in recommendation:
+        food_id = record[0]
+        fitness = record[1]
+        print(food_id)
+        food = DBHelper.get_food(food_id)
+        food_name = food[0]
+        restaurant = food[1]
+        score = DBHelper.get_avg_score(food_id)
+        image = DBHelper.get_img(food_id)
+        print(image)
+        record_dict = dict(food_name=food_name, restaurant=restaurant, image=image, score=score)
+        recommend_list.append(record_dict)
+    print(recommend_list)
+    context = {'recommendation': recommend_list}
+    return render_template('02-suggestions.html', **context)
 
 
 @app.route('/group')

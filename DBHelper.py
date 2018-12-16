@@ -68,6 +68,12 @@ def get_food_id(food_name, restaurant):
     return c
 
 
+def get_food(food_id):
+    c = conn.execute("SELECT food_name,restaurant FROM foods where food_id = ?", (food_id,)).fetchone()
+    print(c)
+    return c
+
+
 def get_history(user_id):
     print(user_id)
     c = conn.execute("SELECT food_name,time,restaurant,history.food_id FROM history,foods "
@@ -76,13 +82,14 @@ def get_history(user_id):
     return c
 
 
-def get_avg_(food_id):
-    c = conn.execute("SELECT"
-                     "food_id, ifnull(avg(hot),2.5) as hot, ifnull(avg(salty),2.5) as salty, "
+def get_avg_taste(food_id):
+    c = conn.execute("SELECT "
+                     "ifnull(avg(hot),2.5) as hot, ifnull(avg(salty),2.5) as salty, "
                      "ifnull(avg(sweet),2.5) as sweet,"
-                     "ifnull(avg(sour),2.5) as sour, ifnull(avg(oily),2.5) as oily")
-    # fixme
-    pass
+                     "ifnull(avg(sour),2.5) as sour, ifnull(avg(oily),2.5) as oily "
+                     "FROM comments WHERE food_id=?", (food_id,)).fetchall()[0]
+    print(c)
+    return c
 
 
 def get_img(food_id):

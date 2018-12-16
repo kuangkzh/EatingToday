@@ -109,7 +109,20 @@ def suggestions():
 
 @app.route('/group')
 def group():
-    return render_template('03-group.html')
+    res = DBHelper.conn.execute("SELECT feast.food_id,appoint_time,restaurant,food_name,people_limit,people_count,nickname"
+                                " FROM feast JOIN foods ON foods.food_id=feast.food_id "
+                                "JOIN user ON feast.host_user_id=user.user_id "
+                                "JOIN (SELECT feast_id,count(*) as people_count FROM appointment GROUP BY feast_id)"
+                                " as tmp ON tmp. feast_id=feast.feast_id;").fetchall()
+    groups = []
+    for i in res:
+        color = "#0b0" if i[4] > i[5] else "#b00"
+        groups.append({"image": DBHelper.get_img(i[0]),
+                       "time_format": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(i[1])),
+                       "restaurant": i[2], "food_name": i[3], "people_limit": i[4], "people_count": i[5],
+                       "score": DBHelper.get_avg_score(i[0]), "host": i[6], "color": color})
+    context = {'groups': groups}
+    return render_template('03-group.html', **context)
 
 
 @app.route('/aboutme')

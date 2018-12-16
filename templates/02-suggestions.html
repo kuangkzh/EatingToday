@@ -32,12 +32,54 @@
                                     <div class="a-box-a-a-r-b">
                                         <p> 评分：{{ food.score }}</p>
                                     </div>
+
                                 </div>
+
                             </div>
+                            <button class="mui-pull-right" style="margin-right:10px">
+                                <a style="color:black" href="#picture">不想吃</a>
+                            </button>
                         </div>
                     </div>
                 </div>
             {% endfor %}
+        </div>
+        <!--弹出提示-->
+		<div id="picture" class="mui-popover mui-popover-action ">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='too_sweet') }}">太甜了</a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='not_sweet') }}">不够甜</a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='too_sour') }}">太酸了</a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='not_sour') }}">不够酸</a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='too_salty') }}">太咸了</a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='tasteless') }}">太淡了</a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='too_hot') }}">太辣了</a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='too_oily') }}">太腻了</a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a href="{{ url_for('suggestions', message='no_reason') }}">没有理由</a>
+                </li>
+            </ul>
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">
+                    <a href="#picture"><b>取消</b></a>
+                </li>
+            </ul>
         </div>
 		<!--底部导航-->
 		<nav class="mui-bar mui-bar-tab">
@@ -45,7 +87,7 @@
 				<span class="mui-icon iconfont icon-canyin"></span>
 				<span class="mui-tab-label">吃过的</span>
 			</a>
-			<a class="mui-tab-item mui-active" href="{{ url_for('suggestions') }}">
+			<a class="mui-tab-item mui-active" href="{{ url_for('suggestions', message='null') }}">
 				<span class="mui-icon iconfont icon-canting"></span>
 				<span class="mui-tab-label">今天吃啥</span>
 			</a>

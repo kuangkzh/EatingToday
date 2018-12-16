@@ -60,6 +60,12 @@ def picture_path(user_id, food_id, pic_path):   # 将图片路径注册到评论
     conn.commit()
 
 
+def get_user(user_id):
+    c = conn.execute("SELECT nickname FROM user where user_id = ?", (user_id,)).fetchone()[0]
+    print(c)
+    return c
+
+
 def get_food_id(food_name, restaurant):
     c = conn.execute("SELECT food_id FROM foods where food_name = ?", (food_name,)).fetchone()[0]
     if c == 0:

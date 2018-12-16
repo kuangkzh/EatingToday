@@ -134,12 +134,16 @@ def history_upload():
     return render_template('01-history-upload.html')
 
 
+
 @app.route('/suggestions')
 def suggestions():
     user_id = session.get('user_id')
+    # food_id = session.get('food_id')
+    food_id = 1
     num = 3
     recommender = FoodRecommender.FoodRecommender(user_id)
-    recommendation = recommender.get_recommend(3)
+
+    recommendation = recommender.get_recommend(num)
     recommend_list = []
     for record in recommendation:
         food_id = record[0]
@@ -178,7 +182,9 @@ def group():
 
 @app.route('/aboutme')
 def aboutme():
-    return render_template('04-aboutme.html')
+    user_id = session.get('user_id')
+    username = DBHelper.get_user(user_id)
+    return render_template('04-aboutme.html', username=username)
 
 
 @app.route('/aboutme/settings')

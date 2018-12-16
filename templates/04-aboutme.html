@@ -19,33 +19,32 @@
 		<div class="mui-content">
 		    <div class="d-box">
 		    	<div class="logo-img"  style="background:#fff;">
-		    		<img src="{{ url_for('static', filename='img/logo.png') }}/>
-		    		<h4>EATqueen</h4>
-		    		<p>Happy every day!</p>
+		    		<img src="{{ url_for('static', filename='img/logo.png') }}"/>
+		    		<h4>{{ username }}</h4>
+		    		<p>Enjoy food every day!</p>
 		    	</div>
 			</div>
 		    <div class="d-box-a">
 		    	<ul class="mui-table-view">
 					<li class="mui-table-view-cell">
-						<a class="mui-navigate-right">吃过的</a>
+						<a class="mui-navigate-right" href="{{ url_for('history') }}">吃过的</a>
 					</li>
 					<li class="mui-table-view-cell">
-						<a class="mui-navigate-right">想吃的</a>
+						<a class="mui-navigate-right" href="{{ url_for('suggestions', message='') }}">想吃的</a>
 					</li>
 					<li class="mui-table-view-cell">
-						<a class="mui-navigate-right">好友</a>
+						<a class="mui-navigate-right" href="{{ url_for('group') }}">聚餐</a>
 					</li>
 				</ul>
 			</div>
 		</div>
-        </div>
 		<!--底部导航-->
 		<nav class="mui-bar mui-bar-tab">
 			<a id="defaultTab" class="mui-tab-item" href="/history">
 				<span class="mui-icon iconfont icon-canyin"></span>
 				<span class="mui-tab-label">吃过的</span>
 			</a>
-			<a class="mui-tab-item" href="{{ url_for('suggestions') }}">
+			<a class="mui-tab-item" href="{{ url_for('suggestions', message='') }}">
 				<span class="mui-icon iconfont icon-canting"></span>
 				<span class="mui-tab-label">今天吃啥</span>
 			</a>

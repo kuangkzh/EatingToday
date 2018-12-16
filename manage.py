@@ -7,7 +7,7 @@ import DBHelper
 
 
 UPLOAD_FOLDER = 'static/img/food/'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['jpg'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -85,20 +85,40 @@ def history_detail(food):
 @app.route('/history/upload', methods=['GET', 'POST'])
 def history_upload():
     if request.method == 'POST':
-        # check if the post request has the file part
+        t = time.time()
+        # 检查标题
+        if 'food_name' == '':
+            message = '请输入食物名称'
+            return redirect(url_for('history', message=message))
+        # 检查图片是否存在
         if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+            filename = 'logo.png'
+        else:
+            file = request.files['file']
+            # 检查图片格式
+            if file and not allowed_file(file.filename):
+                message = '请上传jpg格式的图片'
+                return redirect(url_for('history', message=message))
+            # 时间戳作为文件名
+            filename = str(t) + '.jpg'
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return render_template('01-history-upload.html', message='上传成功！')
+            print(file.filename)
+        # 更新数据库
+        food_name = request.form['food_name']
+        restaurant = request.form['restaurant']
+        comment = request.form['comment']
+        score = request.form['score']
+        hot = request.form['hot']
+        salty = request.form['salty']
+        sweet = request.form['sweet']
+        sour = request.form['sour']
+        oily = request.form['oily']
+        food_id = DBHelper.get_food_id(food_name, restaurant)
+        user_id = session.get('user_id')
+        DBHelper.edit_comment(user_id, food_id, score, hot, salty, sweet, sour, oily, comment, '', '')
+        DBHelper.picture_path(user_id, food_id, filename)
+        DBHelper.new_history(user_id, food_id, t)
+        return redirect(url_for('history'))
     return render_template('01-history-upload.html')
 
 

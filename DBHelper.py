@@ -30,8 +30,8 @@ def new_food(food_name, restaurant):
     return fid  # 返回food_id
 
 
-def new_history(user_id, food_id):
-    conn.execute("INSERT INTO history VALUES(?,?,?)", (user_id, food_id, time.time()))
+def new_history(user_id, food_id, time):
+    conn.execute("INSERT INTO history VALUES(?,?,?)", (user_id, food_id, time))
     conn.commit()
 
 
@@ -60,9 +60,17 @@ def picture_path(user_id, food_id, pic_path):   # 将图片路径注册到评论
     conn.commit()
 
 
+def get_food_id(food_name, restaurant):
+    c = conn.execute("SELECT food_id FROM foods where food_name = ?", (food_name,)).fetchone()[0]
+    if c == 0:
+        new_food(food_name, restaurant)
+        c = conn.execute("SELECT food_id FROM foods where food_name = ?", (food_name,)).fetchone()[0]
+    return c
+
+
 def get_history(user_id):
     print(user_id)
-    c = conn.execute("SELECT food_name,time,restaurant,history.food_id from history,foods "
+    c = conn.execute("SELECT food_name,time,restaurant,history.food_id FROM history,foods "
                      "where history.user_id = ? and history.food_id = foods.food_id ",
                      (user_id,)).fetchall()
     return c

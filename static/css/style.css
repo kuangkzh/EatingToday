@@ -180,13 +180,16 @@
 	font-size: 20px;
 	color: #DD524D;
 	margin: 0px;
-	text-align:center;
+	text-align:left;
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-left:5px;
 }
 .a-box-a-a-r-b p{
 	width:33.33%;
 	float: left;
-	text-align:center;
-	margin: 2px;
+	text-align:left;
+	margin-left: 5px;
 	height: 30px;
 	line-height: 30px;
 }

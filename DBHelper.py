@@ -62,9 +62,29 @@ def picture_path(user_id, food_id, pic_path):   # 将图片路径注册到评论
 
 def get_history(user_id):
     print(user_id)
-    c = conn.execute("SELECT food_name,time from history,foods where user_id = ? and history.food_id = foods.food_id",
+    c = conn.execute("SELECT food_name,time,restaurant,history.food_id from history,foods "
+                     "where history.user_id = ? and history.food_id = foods.food_id ",
                      (user_id,)).fetchall()
-    print(c)
+    return c
+
+
+def get_avg_(food_id):
+    c = conn.execute("SELECT"
+                     "food_id, ifnull(avg(hot),2.5) as hot, ifnull(avg(salty),2.5) as salty, "
+                     "ifnull(avg(sweet),2.5) as sweet,"
+                     "ifnull(avg(sour),2.5) as sour, ifnull(avg(oily),2.5) as oily")
+    # fixme
+    pass
+
+
+def get_img(food_id):
+    c = conn.execute("SELECT img FROM comments WHERE food_id=?", (food_id,)).fetchone()[0]
+    return c
+
+
+def get_avg_score(food_id):
+    c = conn.execute("SELECT avg(score) FROM comments WHERE food_id=?", (food_id,)).fetchone()[0]
+    print('score:',c)
     return c
 
 

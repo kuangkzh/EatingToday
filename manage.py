@@ -55,7 +55,26 @@ def index():
 
 @app.route('/history')
 def history():
-    return render_template('01-history.html')
+    user_id = session.get('user_id')
+    user_history = DBHelper.get_history(user_id)
+    # food_name,time,restaurant,history.food_id
+    history_list = []
+    for record in user_history:
+        food_name = record[0]
+        t = record[1]
+        restaurant = record[2]
+        food_id = record[3]
+        print(food_id)
+        score = DBHelper.get_avg_score(food_id)
+        image = DBHelper.get_img(food_id)
+        print(image)
+        time_array = time.localtime(t)
+        time_format = time.strftime("%Y-%m-%d %H:%M:%S", time_array)
+        record_dict = dict(food_name=food_name, time_format=time_format, restaurant=restaurant, image=image, score=score)
+        history_list.append(record_dict)
+    print(history_list)
+    context = {'history': history_list}
+    return render_template('01-history.html', **context)
 
 
 @app.route('/history/<food>')

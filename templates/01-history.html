@@ -1,6 +1,5 @@
 <!doctype html>
 <html>
-
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
@@ -13,89 +12,41 @@
 	<body>
 		<header class="mui-bar mui-bar-nav bgcolor">
 			<a href="#" class=" mui-icon mui-icon-plus mui-pull-right" id="span"></a>
-		    <h1 class="mui-title">吃过的食物</h1>
+		    <h1 class="mui-title">历史记录</h1>
 		</header>
 		<div class="mui-content">
-
 			<div class="so" style="box-shadow: 0 0px 0px">
 				<div class="so-l">
-					<!-- 需要修改 -->
-                    <a href="#" class=" mui-icon mui-icon-search  mui-pull-left" id="span"></a>
+                    <a href="#" class=" mui-icon mui-icon-search  mui-pull-left"></a>
 				</div>
 				<div class="so-r">
-					<input type="text" id="soso" style="color:#000" placeholder="吃了啥？">
+					<input type="text" id="soso" style="color:#000" placeholder="搜索食物">
 				</div>
 		    </div>
-		    <div class="a-box" style="display:block;">
-		    	<div class="a-box-a">
-		    		<div  class="a-box-a-a">
-		    			<div class="a-box-a-a-l">
-		    				<img src="img/moren_food.png"/>
-		    			</div>
-		    			<div class="a-box-a-a-r">
-		    				<div class="a-box-a-a-r-t">
-		    					<p>来自一餐的食物<p>
-		    				    <span>一小时前</span>
-		    				</div>  <!--上部-->
-		    				<div class="a-box-a-a-r-m">
-		    					<p>饺子</p>
-		    				</div>    <!--中部-->
-		    				<div class="a-box-a-a-r-b">
-		    					<p><span class="mui-icon mui-icon-redo span-t">&nbsp&nbsp</span class="span-m">2</p>
-		    					<p><span class="mui-icon mui-icon-redo span-t">&nbsp&nbsp</span class="span-m">2</p>
-		    				</div> <!--下部-->
-		    			</div>
-		    		</div>
-		    	</div>
-		    </div>
-		    <div class="a-box" style="display:block;">
-		    	<div class="a-box-a">
-		    		<div  class="a-box-a-a">
-		    			<div class="a-box-a-a-l">
-		    				<img src="img/food1.jpg"/>
-		    			</div>
-		    			<div class="a-box-a-a-r">
-		    				<div class="a-box-a-a-r-t">
-		    					<p>来自三餐的食物</p>
-		    				     <span>两小时前</span>
-		    				</div>  <!--上部-->
-		    				<div class="a-box-a-a-r-m">
-		    					<p>鸡肉套饭</p>
-		    				</div>    <!--中部-->
-		    				<div class="a-box-a-a-r-b">
-		    					<p><span class="mui-icon mui-icon-redo span-t">&nbsp&nbsp</span class="span-m">2</p>
-		    					<p><span class="mui-icon mui-icon-redo span-t">&nbsp&nbsp</span class="span-m">2</p>
-		    				</div> <!--下部-->
-		    			</div>
-		    		</div>
-		    	</div>
-		    </div>
-		    <div class="a-box" style="display:block;">
-		    	<div class="a-box-a">
-		    		<div  class="a-box-a-a mui-table-view-cell mui-slider-handle">
-		    			<div class="mui-slider-right mui-disabled">
-						<a class="mui-btn mui-btn-red">删除</a>
-					</div>
-		    			<div class="a-box-a-a-l">
-		    				<img src="img/food2.jpg"/>
-		    			</div>
-		    			<div class="a-box-a-a-r">
-		    				<div class="a-box-a-a-r-t">
-		    					<p>来自三餐的食物</p>
-		    				     <span>两小时前</span>
-		    				</div>  <!--上部-->
-		    				<div class="a-box-a-a-r-m">
-		    					<p>煲仔饭</p>
-		    				</div>    <!--中部-->
-		    				<div class="a-box-a-a-r-b">
-		    					<p><span class="mui-icon mui-icon-redo span-t">&nbsp&nbsp</span class="span-m">2</p>
-		    					<p><span class="mui-icon mui-icon-redo span-t">&nbsp&nbsp</span class="span-m">2</p>
-		    				</div> <!--下部-->
-		    			</div>
-		    		</div>
-		    	</div>
-		    </div>
-		</div>
+            {% for food in history %}
+                <div class="a-box" style="display:block;">
+                    <div class="a-box-a">
+                        <div  class="a-box-a-a">
+                            <div class="a-box-a-a-l">
+                                <img src="{{ url_for('static', filename='food/'+food.image) }}"/>
+                            </div>
+                            <div class="a-box-a-a-r">
+                                <div class="a-box-a-a-r-t">
+                                    <p>【{{ food.time_format }} 】</p>
+                                    <p>&nbsp;来自{{ food.restaurant }}的食物</p>
+                                    <div class="a-box-a-a-r-m">
+                                        <p>{{ food.food_name }}</p>
+                                    </div>
+                                    <div class="a-box-a-a-r-b">
+                                        <p> 评分：{{ food.score }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 		<!--底部导航-->
 		<nav class="mui-bar mui-bar-tab">
 			<a id="defaultTab" class="mui-tab-item mui-active" href="/history">

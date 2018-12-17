@@ -6,6 +6,7 @@ import time
 import operator
 import DBHelper
 import FoodRecommender
+import Email
 
 
 UPLOAD_FOLDER = 'static/img/food/'
@@ -41,8 +42,20 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        re_password = request.form['password']
+        if password != re_password:
+            message = "两次输入的密码不一致"
+            return render_template('register.html', message=message)
+        user_id = DBHelper.create_user(username, password, '')
+        print('user_id:', user_id)
+        session.permanent = True
+        session['user_id'] = user_id
+        return redirect(url_for('history'))
     return render_template('register.html')
 
 
@@ -93,7 +106,13 @@ def food_detail(food):
     sour = taste[3]
     oily = taste[4]
     food_dict = dict(food_name=food, img=img, score=score, sour=sour, sweet=sweet, hot=hot, salty=salty, oily=oily)
-    context = {'food_dict': food_dict}
+    comments = DBHelper.get_comment(food_id)
+    comment_list = []
+    for c in comments:
+        if c[0] is not None:
+            comment_list.append(c[0])
+    print(comment_list)
+    context = {'food_dict': food_dict, 'comments': comment_list}
     return render_template('food-detail.html', food=food, **context)
 
 
@@ -227,7 +246,10 @@ def aboutme_settings(name):
 
 @app.route('/appoint/<feast_id>')
 def appoint(feast_id):
-    DBHelper.new_appoint(feast_id, session.get('user_id'), lambda: print(""))
+    def send_email():
+        print("【发送邮件】")
+        #Email.send_plain_text(["1432245553@qq.com"], "您的约饭人齐啦", "您的约饭人齐啦", "今天吃啥")
+    DBHelper.new_appoint(feast_id, session.get('user_id'), send_email)
     return redirect("/group")
 
 # ------以下为测试页面-------

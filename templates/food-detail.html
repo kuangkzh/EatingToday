@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>今天吃啥-食物详情</title>
+		<script src="{{ url_for('static', filename='js/mui.min.js') }}"></script>
+        <script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts.js"></script>
+		<link href="{{ url_for('static', filename='css/mui.min.css') }}" rel="stylesheet"/>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/iconfont.css') }}" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav bgcolor">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">食物详情</h1>
+		</header>
+		<div class="mui-content">
+			<div class="xq-box" >
+				<div class="xq-box-a">
+					<div class="xq-box-a-t" >
+						<div class="xq-box-a-t-l">
+							<img src="{{ url_for('static', filename='img/food/'+food_dict.img) }}"/>
+						</div>
+						<div class="xq-box-a-t-r">
+                            <p style="color:#cd5c5c">{{ food_dict.food_name }}</p>
+                            <p>评分：{{ food_dict.score }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="xq-box-a-b" style="height: 350px; overflow: hidden; text-align:center">
+				<p class="mui-pull-left" style="margin-left:10px;color:black;margin-top:15px">口味评测:</p>
+				<div id="radar" style="width:70%; height: 100%; margin:0 auto"></div>
+			</div>
+			<div class="a-box" style="display:block;">
+				<div class="a-box-a">
+					<div  class="a-box-a-a">
+					   <p style="margin-left:10px; color:black">精选评论：</p>
+					</div>
+				</div>
+			</div>
+			{% for comment in comments %}
+                <div class="a-box" style="display:block;">
+                    <div class="a-box-a">
+                        <div  class="a-box-a-a">
+                           <p style="margin-left:10px">{{ comment }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+		</div>
+		<script type="text/javascript">
+			mui.init()
+			sour = {{  food_dict.sour  }};
+			sweet = {{  food_dict.sweet  }};
+			salty = {{  food_dict.salty  }};
+			hot = {{  food_dict.hot  }};
+			oily = {{  food_dict.oily  }};
+            option = {
+                tooltip : {},
+                polar : [
+                   {indicator : [{ text: '酸', max: 5},
+                           { text: '甜', max: 5},
+                           { text: '辣', max: 5},
+                           { text: '咸', max: 5},
+                           { text: '腻', max: 5}]
+                    }
+                ],
+                series : [
+                    {
+                        type: 'radar',
+                        data : [
+                            {
+                                value : [sour, sweet, hot, salty, oily],
+                                name : '口味'
+                            }
+                        ]
+                    }
+                ]
+            };
+            //初始化echarts实例
+            var myChart = echarts.init(document.getElementById('radar'));
+            myChart.setOption(option);
+		</script>
+	</body>
+</html>

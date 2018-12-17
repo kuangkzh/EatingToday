@@ -55,44 +55,41 @@
 		    <h1 class="mui-title">添加食物</h1>
 		</header>
 		<div class="mui-content">
-		    <div class="fa-box">
-		    	<input type="text" class="info" placeholder="吃的什么鸭">
-		    	<textarea cols="60" class="info" rows="10" style="height:100px;" placeholder="请输入你的评论"></textarea>
-				<div class="mui-input-row mui-input-range">
+		    <form class="fa-box" name="comment-form" method='post' enctype=multipart/form-data>
+		    	<input type="text" class="info" placeholder="吃的什么鸭" name="food_name">
+                <input type="text" class="info" placeholder="食堂/餐厅名称" name="restaurant">
+		    	<textarea cols="60" class="info" rows="10" style="height:100px;" placeholder="请输入你的评论..." name="comment"></textarea>
+				<input type='file' name='file'>
+                <div class="mui-input-row mui-input-range">
 					<label>评分</label>
-					<input type="range" min="0" max="5" step="0.1" value="3">
+					<input name="score" type="range" min="0" max="5" step="0.1" value="3">
 				</div>
 				<div class="mui-input-row mui-input-range">
 					<label>酸</label>
-					<input type="range" min="0" max="5" step="0.1" value="3">
+					<input name="sour" type="range" min="0" max="5" step="0.1" value="3">
 				</div>
 				<div class="mui-input-row mui-input-range">
 					<label>甜</label>
-					<input type="range" min="0" max="5" step="0.1" value="3">
+					<input name="sweet" type="range" min="0" max="5" step="0.1" value="3">
 				</div>
 				<div class="mui-input-row mui-input-range">
 					<label>辣</label>
-					<input type="range" min="0" max="5" step="0.1" value="3">
+					<input name="hot" type="range" min="0" max="5" step="0.1" value="3">
 				</div>
 				<div class="mui-input-row mui-input-range">
 					<label>咸</label>
-					<input type="range" min="0" max="5" step="0.1" value="3">
+					<input name="salty" type="range" min="0" max="5" step="0.1" value="3">
 				</div>
 				<div class="mui-input-row mui-input-range">
 					<label>腻</label>
-					<input type="range" min="0" max="5" step="0.1" value="3">
+					<input name="oily" type="range" min="0" max="5" step="0.1" value="3">
 				</div>
 				<div style="height:60px;"></div>
-                <div>
-                    <form method='post' enctype='multipart/form-data'>
-                        <input type='file' name='file'>
-                        <input type='submit' class="mui-pull-right" style='background:#cd5c5c;margin-right:10px;color:black' value='确认上传'>
-                    </form>
+                <div class="btn">
+                    <button id="btn" type="submit">发  布</button>
                 </div>
-		    </div>
-		    <div class="btn">
-		    	<button id="btn">发  布</button>
-		    </div>
+		    </form>
+
 		</div>
 		<script type="text/javascript">
 			mui.init();

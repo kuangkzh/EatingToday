@@ -9,16 +9,79 @@
 		<link href="{{ url_for('static', filename='css/mui.min.css') }}" rel="stylesheet"/>
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/iconfont.css') }}" />
+        <script>var food_id;</script>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav bgcolor">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 		    <h1 class="mui-title">今日推荐</h1>
 		</header>
 		<div class="mui-content">
+            {% for food in recommendation %}
+                <div class="a-box" style="display:block;">
+                    <div class="a-box-a">
+                        <div  class="a-box-a-a">
+                            <div class="a-box-a-a-l">
+                                <img src="{{ url_for('static', filename='img/food/'+food.image) }}"/>
+                            </div>
+                            <div class="a-box-a-a-r">
+                                <div class="a-box-a-a-r-t">
+                                    <p>&nbsp;位于【{{ food.restaurant }}】的食物</p>
+                                    <div class="a-box-a-a-r-m">
+                                        <a href="{{ url_for('food_detail', food=food.food_name) }}">{{ food.food_name }}</a>
+                                    </div>
+                                    <div class="a-box-a-a-r-b">
+                                        <p> 评分：{{ food.score }}</p>
+                                    </div>
 
-		</div>
+                                </div>
+
+                            </div>
+                            <button class="mui-pull-right" style="margin-right:10px" onclick="food_id='{{food.food_id}}'">
+                                <a style="color:black" href="#picture">不想吃</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!--弹出提示-->
+		<div id="picture" class="mui-popover mui-popover-action ">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell" onclick="document.getElementById('too_sweet').href='{{ url_for('suggestions') }}/too_sweet/'+food_id">
+                    <a id="too_sweet">太甜了</a>
+                </li>
+                <li class="mui-table-view-cell" onclick="document.getElementById('not_sweet').href='{{ url_for('suggestions') }}/not_sweet/'+food_id">
+                    <a id="not_sweet">不够甜</a>
+                </li>
+                <li class="mui-table-view-cell" onclick="document.getElementById('too_sour').href='{{ url_for('suggestions') }}/too_sour/'+food_id">
+                    <a id="too_sour">太酸了</a>
+                </li>
+                <li class="mui-table-view-cell" onclick="document.getElementById('not_sour').href='{{ url_for('suggestions') }}/not_sour/'+food_id">
+                    <a id="not_sour">不够酸</a>
+                </li>
+                <li class="mui-table-view-cell" onclick="document.getElementById('too_salty').href='{{ url_for('suggestions') }}/too_salty/'+food_id">
+                    <a id="too_salty">太咸了</a>
+                </li>
+                <li class="mui-table-view-cell" onclick="document.getElementById('tasteless').href='{{ url_for('suggestions') }}/tasteless/'+food_id">
+                    <a id="tasteless">太淡了</a>
+                </li>
+                <li class="mui-table-view-cell" onclick="document.getElementById('too_hot').href='{{ url_for('suggestions') }}/too_hot/'+food_id">
+                    <a id="too_hot">太辣了</a>
+                </li>
+                <li class="mui-table-view-cell" onclick="document.getElementById('too_oily').href='{{ url_for('suggestions') }}/too_oily/'+food_id">
+                    <a id="too_oily">太腻了</a>
+                </li>
+                <li class="mui-table-view-cell" onclick="document.getElementById('no_reason').href='{{ url_for('suggestions') }}/no_reason/'+food_id">
+                    <a id="no_reason">没有理由</a>
+                </li>
+            </ul>
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">
+                    <a href="#picture"><b>取消</b></a>
+                </li>
+            </ul>
+        </div>
 		<!--底部导航-->
 		<nav class="mui-bar mui-bar-tab">
 			<a id="defaultTab" class="mui-tab-item" href="/history">
